@@ -1,7 +1,7 @@
-
 package com.simats.prediagnostic
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -22,6 +22,7 @@ import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.People
 import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -44,33 +45,42 @@ import com.simats.prediagnostic.ui.theme.DarkBlue
 import com.simats.prediagnostic.ui.theme.PrediagnosticTheme
 
 @Composable
-fun DoctorHomeScreen() {
+fun DoctorHomeScreen(
+    onHomeClicked: () -> Unit,
+    onCasesClicked: () -> Unit,
+    onPatientsClicked: () -> Unit,
+    onProfileClicked: () -> Unit,
+    onNewAnalysisClicked: () -> Unit,
+    onPatientChatClicked: (String) -> Unit,
+    onPriorityCaseClicked: () -> Unit,
+    onNotificationsClicked: () -> Unit
+) {
     Scaffold(
         bottomBar = {
             NavigationBar {
                 NavigationBarItem(
                     icon = { Icon(Icons.Default.Home, contentDescription = "Home") },
                     label = { Text("Home") },
-                    selected = false,
-                    onClick = { }
+                    selected = true,
+                    onClick = onHomeClicked
                 )
                 NavigationBarItem(
-                    icon = { Icon(Icons.Default.Warning, contentDescription = "Cases") },
+                    icon = { Icon(Icons.Default.Search, contentDescription = "Cases") },
                     label = { Text("Cases") },
                     selected = false,
-                    onClick = { }
+                    onClick = onCasesClicked
                 )
                 NavigationBarItem(
                     icon = { Icon(Icons.Default.People, contentDescription = "Patients") },
                     label = { Text("Patients") },
                     selected = false,
-                    onClick = { }
+                    onClick = onPatientsClicked
                 )
                 NavigationBarItem(
                     icon = { Icon(Icons.Default.Person, contentDescription = "Profile") },
                     label = { Text("Profile") },
-                    selected = true,
-                    onClick = { }
+                    selected = false,
+                    onClick = onProfileClicked
                 )
             }
         }
@@ -93,7 +103,7 @@ fun DoctorHomeScreen() {
                             Text(text = "Dr. Doctor", style = MaterialTheme.typography.headlineMedium, color = Color.White, fontWeight = FontWeight.Bold)
                             Text(text = "Pathology Department", color = Color.White.copy(alpha = 0.8f))
                         }
-                        Icon(Icons.Default.Notifications, contentDescription = "Notifications", tint = Color.White)
+                        Icon(Icons.Default.Notifications, contentDescription = "Notifications", tint = Color.White, modifier = Modifier.clickable(onClick = onNotificationsClicked))
                     }
                     Spacer(modifier = Modifier.height(24.dp))
                     Text(text = "Cases by Risk Level", color = Color.White, style = MaterialTheme.typography.titleMedium)
@@ -115,8 +125,8 @@ fun DoctorHomeScreen() {
                 ) {
                     Column(modifier = Modifier.padding(16.dp)) {
                         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceAround) {
-                            ActionCard("New Analysis", "Upload medical images", Icons.Default.ArrowUpward, Color(0xFFE3F2FD))
-                            ActionCard("Patient Chat", "Messages & Consults", Icons.Default.ChatBubble, Color(0xFFE8F5E9))
+                            ActionCard("New Analysis", "Upload medical images", Icons.Default.ArrowUpward, Color(0xFFE3F2FD), onClick = onNewAnalysisClicked)
+                            ActionCard("Patient Chat", "Messages & Consults", Icons.Default.ChatBubble, Color(0xFFE8F5E9), onClick = { onPatientChatClicked("Sarah Johnson") })
                         }
                         Spacer(modifier = Modifier.height(24.dp))
                         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
@@ -124,11 +134,11 @@ fun DoctorHomeScreen() {
                            Text(text = "View All", color = MaterialTheme.colorScheme.primary, fontWeight = FontWeight.Bold)
                         }
                         Spacer(modifier = Modifier.height(16.dp))
-                        PriorityCaseCard("Rahul Sharma", "Blood Smear Analysis", "High Risk", Color(0xFFFCE4EC), "ID: 102", "Jan 22, 2024", "Pending Review")
+                        PriorityCaseCard("Rahul Sharma", "Blood Smear Analysis", "High Risk", Color(0xFFFCE4EC), "ID: 102", "Jan 22, 2024", "Pending Review", onClick = onPriorityCaseClicked)
                         Spacer(modifier = Modifier.height(16.dp))
-                        PriorityCaseCard("Priya Patel", "Tissue Biopsy", "Medium Risk", Color(0xFFFFF8E1), "ID: 125", "Jan 22, 2024", "In Progress")
+                        PriorityCaseCard("Priya Patel", "Tissue Biopsy", "Medium Risk", Color(0xFFFFF8E1), "ID: 125", "Jan 22, 2024", "In Progress", onClick = onPriorityCaseClicked)
                         Spacer(modifier = Modifier.height(16.dp))
-                        PriorityCaseCard("Amit Kumar", "Urine Analysis", "Low Risk", Color(0xFFE8F5E9), "ID: 240", "Jan 21, 2024", "Completed")
+                        PriorityCaseCard("Amit Kumar", "Urine Analysis", "Low Risk", Color(0xFFE8F5E9), "ID: 240", "Jan 21, 2024", "Completed", onClick = onPriorityCaseClicked)
                         Spacer(modifier = Modifier.height(24.dp))
                         Card(
                             modifier = Modifier.fillMaxWidth(),
@@ -136,7 +146,6 @@ fun DoctorHomeScreen() {
                             colors = CardDefaults.cardColors(containerColor = Color(0xFF3F51B5))
                         ) {
                             Row(modifier = Modifier.padding(16.dp), verticalAlignment = Alignment.CenterVertically) {
-                                BrainIcon(color = Color.White, modifier = Modifier.size(32.dp))
                                 Spacer(modifier = Modifier.width(16.dp))
                                 Column(modifier = Modifier.weight(1f)) {
                                     Text(text = "AI Diagnostic Assistant", fontWeight = FontWeight.Bold, color = Color.White)
@@ -164,9 +173,9 @@ fun RiskLevelCard(level: String, count: String, color: Color, icon: androidx.com
 }
 
 @Composable
-fun ActionCard(title: String, subtitle: String, icon: androidx.compose.ui.graphics.vector.ImageVector, color: Color) {
+fun ActionCard(title: String, subtitle: String, icon: androidx.compose.ui.graphics.vector.ImageVector, color: Color, onClick: () -> Unit) {
     Card(
-        modifier = Modifier.size(150.dp, 120.dp),
+        modifier = Modifier.size(150.dp, 120.dp).clickable(onClick = onClick),
         shape = RoundedCornerShape(16.dp),
         colors = CardDefaults.cardColors(containerColor = color)
     ) {
@@ -183,8 +192,8 @@ fun ActionCard(title: String, subtitle: String, icon: androidx.compose.ui.graphi
 }
 
 @Composable
-fun PriorityCaseCard(name: String, analysis: String, risk: String, riskColor: Color, id: String, date: String, status: String) {
-    Card(modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(12.dp), elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)) {
+fun PriorityCaseCard(name: String, analysis: String, risk: String, riskColor: Color, id: String, date: String, status: String, onClick: () -> Unit) {
+    Card(modifier = Modifier.fillMaxWidth().clickable(onClick = onClick), shape = RoundedCornerShape(12.dp), elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)) {
         Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
             Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
                 Text(text = id, fontSize = 12.sp, color = Color.Gray)
@@ -206,6 +215,6 @@ fun PriorityCaseCard(name: String, analysis: String, risk: String, riskColor: Co
 @Composable
 fun DoctorHomeScreenPreview() {
     PrediagnosticTheme {
-        DoctorHomeScreen()
+        DoctorHomeScreen({}, {}, {}, {}, {}, {}, {}, {})
     }
 }

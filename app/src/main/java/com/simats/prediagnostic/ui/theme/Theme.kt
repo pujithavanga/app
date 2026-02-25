@@ -10,10 +10,10 @@ import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
 
 private val LightColorScheme = lightColorScheme(
-    primary = Teal,
-    background = LightMint,
+    primary = SkyGreen,
+    background = LightSkyGreen,
     onBackground = DarkCharcoal,
-    surface = LightMint,
+    surface = LightSkyGreen,
     onSurface = DarkCharcoal,
     onPrimary = DarkCharcoal
 )

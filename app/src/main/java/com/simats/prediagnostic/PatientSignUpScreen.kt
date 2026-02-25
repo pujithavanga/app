@@ -41,6 +41,7 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.simats.prediagnostic.ui.theme.PrediagnosticTheme
+import com.simats.prediagnostic.ui.theme.Teal
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -101,7 +102,7 @@ fun PatientSignUpScreen(onNavigateBack: () -> Unit, onCreateAccountClicked: () -
                 modifier = Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(12.dp),
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = Color(0xFF20C997)
+                    containerColor = Teal
                 )
             ) {
                 Text("Create Account", color = Color.White, modifier = Modifier.padding(vertical = 8.dp))
